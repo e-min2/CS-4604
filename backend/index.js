@@ -1,0 +1,134 @@
+import express from "express"
+import mysql from "mysql"
+import cors from "cors"
+
+const app = express()
+
+const db = mysql.createConnection({
+
+    host:"localhost",
+    user:"root",
+    password:"", // Put your password for your MySQL here
+    database:"grade_system_dbms" // Put where you named the dbms but I call it grade_system_dbms
+
+})
+
+app.use(express.json())
+app.use(cors())
+
+app.get("/", (req, res)=> {
+    res.json("hello this is the backend")
+})
+
+app.get("/students", (req, res)=> {
+    const q = "SELECT * FROM STUDENT"
+    db.query(q, (err, data)=>{ // This will query our database db and return a json response of either error or the db data
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
+app.post("/students", (req, res) => {
+    const q = "INSERT INTO STUDENT (`Student_ID`, `Student_Name`, `Major`, `Minor`, `Year`, `SGPA_Value`) VALUES (?)";
+    const values = [req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            // Within this else block we can initiate another insert query into the DECLARES table. 
+            /* 
+                if (err) {
+                    return res.json(err);
+                } else {
+                    return res.json(result);
+                }
+            */
+            return res.json(data);
+        }
+    })
+})
+
+app.delete("/students/:id", (req, res)=>{
+    const studentID = req.params.id
+    // Params represents the url and the id part represents the id given in the url. 
+    // If we wanna delete stuff we need to have a specific ID we use to delete it. 
+    // I don't think we need to account for deleting students from DECLARES table also since I enabled cascade on delete for the fk.
+
+    const q = "DELETE FROM STUDENT WHERE Student_ID = ?"
+
+    db.query(q, [studentID], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json("Student has been deleted")
+        }
+    })
+})
+
+// app.put("/students/:id", (req, res)=>{
+//     const studentID = req.params.id
+//     // Params represents the url and the id part represents the id given in the url. 
+//     // If we wanna update students we need to have a specific ID we use to update it in this case their student ID. 
+
+//     const q = "UPDATE STUDENT SET `Student_ID` = ?, `Student_Name` = ?, `Major` = ?, `Minor` = ?, `Year` = ?, `SGPA_Value` = ? WHERE Student_ID = ?";
+
+//     const values =[req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value];
+
+//     db.query(q, [...values, studentID], (err, data) => {
+//         if (err) {
+//             return res.json(err);
+//         } 
+//     });
+
+//     const q2 = "UPDATE DECLARES SET `Maj_Name` = ?, `Min_Name` = ?  WHERE Stud_ID = ?"
+//     db.query(q2, [req.body.Major, req.body.Minor, studentID], (err, data) => {
+//         if (err) {
+//             return res.json(err);
+//         } else {
+//             return res.json("Student has been updated");
+//         }
+//     });
+// })
+
+app.put("/students/:id", (req, res) => {
+    const studentID = req.params.id;
+    // Params represents the URL and the id part represents the id given in the URL. 
+    // If we want to update students, we need to have a specific ID we use to update it, in this case, their student ID. 
+
+    const q = "UPDATE STUDENT SET `Student_ID` = ?, `Student_Name` = ?, `Major` = ?, `Minor` = ?, `Year` = ?, `SGPA_Value` = ? WHERE Student_ID = ?";
+
+    const values = [req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value, studentID];
+
+    db.query(q, [...values, studentID], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            // Execute the second query only after the first query completes successfully
+            // This query will not work if the user decides to change their student ID but in the real world someone's student ID cannot change so it should be
+            const q2 = "UPDATE DECLARES SET `Maj_Name` = ?, `Min_Name` = ? WHERE Stud_ID = ?";
+            db.query(q2, [req.body.Major, req.body.Minor, studentID], (err2, data2) => {
+                if (err2) {
+                    return res.json(err2);
+                } else {
+                    return res.json("Student has been updated");
+                }
+            });
+        }
+    });
+});
+
+
+/*
+ If you get an authentication error it's the issue that the TA mentioned that she had to fix, 
+ I had it on my end as well and I had to fix it as well. The solution is in her slides. 
+*/
+app.listen(8800, ()=>{
+ // This is our port number and you can connect with localHost:8800
+    console.log("Connected to backend!!!")
+
+})
+
