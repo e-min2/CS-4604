@@ -1,0 +1,44 @@
+.App{
+    padding: 0px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+    /*This is just styling effects to center all the student names and stuff.*/
+}
+
+.delete{
+    /*The class names come from how we defined the class names of the buttons in the Students.jsx file. 
+    This is formatting for the delete button.*/
+    color: rgb(242, 100, 100);
+    border: 1px solid rgb(245, 191, 191)
+}
+
+.update{
+    color: rgb(139, 139, 234);
+    border: 1px solid rgb(204, 204, 243);
+}
+
+.form{
+    /*This is formatting for the forms as in the update and add form.*/
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input{
+    /*This is just more formatting for the actual placeholders in the form.*/
+    width: 250px;
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+.formButton{
+    /*Formatting for all the buttons with the class name formButton.*/
+    border:none;
+    padding: 10px;
+    background-color: rgb(244, 142, 74);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
