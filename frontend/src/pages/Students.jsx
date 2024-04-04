@@ -46,9 +46,9 @@ const Students = () => {
                     {/*The map function requires a unique key so I use the student's ID since those should be unique.*/}
                         <h2>{student.Student_Name}</h2>
                         {/*This is just formatting to list out the student's name, major, minor, and gpa values*/}
-                        <span>Student's Major: {student.Major}, </span>
-                        <span>Student's Minor: {student.Minor}, </span>
-                        <span>Student's GPA: {student.SGPA_Value} </span>
+                        <span><b>Student's Major: </b>{student.Major}, </span>
+                        <span><b>Student's Minor: </b> {student.Minor}, </span>
+                        <span><b>Student's GPA: </b> {student.SGPA_Value} </span>
                         <button className="delete" onClick={() =>handleDelete(student.Student_ID)}>Delete Student</button>
                         <button className="update"><Link to={`/update/${student.Student_ID}`}>Update</Link></button>
                     </div>
