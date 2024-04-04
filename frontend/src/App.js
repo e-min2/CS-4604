@@ -12,7 +12,11 @@ import {
 import Students from "./pages/Students";
 import Add from "./pages/Add";
 import Update from "./pages/Update";
-import "./style.css"
+import Instructors from "./pages/Instructors";
+import AddInstructor from "./pages/AddInstructor";
+import UpdateInstructor from "./pages/UpdateInstructor";
+import "./style.css";
+
 
 
 function App() {
@@ -24,6 +28,9 @@ function App() {
             <Route path="/students" element={<Students/>}/>
             <Route path="/add" element={<Add/>}/>
             <Route path="/update/:id" element={<Update/>}/> 
+            <Route path="/instructors" element={<Instructors/>}/>
+            <Route path="/addinstructor" element={<AddInstructor/>}/>
+            <Route path="/updateinstructors/:id" element={<UpdateInstructor/>}/>
             {/*The id part at the end makes sure the current student/instructor's id shows up in the url on the update page*/}
           </Routes>
         </BrowserRouter>
