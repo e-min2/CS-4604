@@ -39,15 +39,19 @@ app.post("/students", (req, res) => {
         if (err) {
             return res.json(err);
         } else {
+            const q2 = "INSERT INTO DECLARES (`Stud_ID`, `Maj_Name`, `Min_Name`) VALUES (?)";
+            const values2 = [req.body.Student_ID, req.body.Major, req.body.Minor];
+            db.query(q2, [values2], (err2, data2) => {
             // Within this else block we can initiate another insert query into the DECLARES table. 
-            /* 
-                if (err) {
-                    return res.json(err);
+                if (err2) {
+                   // console.log("fail");
+                   // console.error("Error inserting into DECLARES:", err2); Was just error checking
+                    return res.json(err2);
                 } else {
-                    return res.json(result);
+                    console.log("success");
+                    return res.json("Student has been added");
                 }
-            */
-            return res.json(data);
+            });
         }
     })
 })
@@ -69,30 +73,6 @@ app.delete("/students/:id", (req, res)=>{
     })
 })
 
-// app.put("/students/:id", (req, res)=>{
-//     const studentID = req.params.id
-//     // Params represents the url and the id part represents the id given in the url. 
-//     // If we wanna update students we need to have a specific ID we use to update it in this case their student ID. 
-
-//     const q = "UPDATE STUDENT SET `Student_ID` = ?, `Student_Name` = ?, `Major` = ?, `Minor` = ?, `Year` = ?, `SGPA_Value` = ? WHERE Student_ID = ?";
-
-//     const values =[req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value];
-
-//     db.query(q, [...values, studentID], (err, data) => {
-//         if (err) {
-//             return res.json(err);
-//         } 
-//     });
-
-//     const q2 = "UPDATE DECLARES SET `Maj_Name` = ?, `Min_Name` = ?  WHERE Stud_ID = ?"
-//     db.query(q2, [req.body.Major, req.body.Minor, studentID], (err, data) => {
-//         if (err) {
-//             return res.json(err);
-//         } else {
-//             return res.json("Student has been updated");
-//         }
-//     });
-// })
 
 app.put("/students/:id", (req, res) => {
     const studentID = req.params.id;
@@ -116,10 +96,10 @@ app.put("/students/:id", (req, res) => {
                 } else {
                     return res.json("Student has been updated");
                 }
-            });
+            })
         }
-    });
-});
+    })
+})
 
 
 /*

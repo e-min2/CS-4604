@@ -4,8 +4,10 @@
     align-items: center;
     justify-content: center;
     text-align: center
+    }
     /*This is just styling effects to center all the student names and stuff.*/
-}
+
+
 
 .delete{
     /*The class names come from how we defined the class names of the buttons in the Students.jsx file. 
@@ -42,3 +44,5 @@ input{
     font-weight: bold;
     cursor: pointer;
 }
+
+

@@ -50,6 +50,7 @@ const Update = () => {
 
 
     return (
+
         <div className='form'>
             <h1>Update Student</h1>
             <input type="number" placeholder='Student ID' min="9" max ="9" onChange={handleChange} name = "Student_ID"></input>

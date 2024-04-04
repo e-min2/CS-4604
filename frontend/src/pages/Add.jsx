@@ -27,7 +27,7 @@ const Add = () => {
         try{
             // We'll uise axios to send our post requests to our backends
             await axios.post("http://localhost:8800/students", student) // This is the api call we wrote for post requests to our database. 
-            navigate("/students") // If everything was successful navigate to the home page. 
+            navigate("/students") // If everything was successful navigate to the students page. 
         }catch(err){
 
         }

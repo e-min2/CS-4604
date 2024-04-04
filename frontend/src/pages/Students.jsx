@@ -39,6 +39,7 @@ const Students = () => {
     return (
         <div>
             <h1>List of all Students</h1>
+            <button><Link to="/add">Add new Student</Link></button>
             <div className="students">
                 {students.map(student => (
                     <div className="student" key={student.Student_ID}> 
@@ -53,7 +54,6 @@ const Students = () => {
                     </div>
                 ))}
             </div>
-            <button><Link to="/add">Add new Student</Link></button>
             {/*This is just adding a button that sends you to the add page to make a new Student*/}
             
         </div>
