@@ -146,6 +146,20 @@ app.post("/courses", (req, res) => {
     })
 })
 
+app.post("/taughtby", (req, res) => {
+    const q = "INSERT INTO TAUGHT_BY (`C_Num`, `Teach_ID`) VALUES (?)";
+    const values = [req.body.C_Num, req.body.Teach_ID];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into TAUGHT_BY:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new course taught by");
+            return res.json("TAUGHT_BY course has been added");
+        }
+    })
+})
 
 app.delete("/students/:id", (req, res)=>{
     const studentID = req.params.id

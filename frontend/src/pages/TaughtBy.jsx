@@ -37,7 +37,7 @@ const TaughtBy = () => {
     return (
         <div>
             <h1>List of Courses Taught By Professors</h1>
-            {/* <button><Link to="/add">Add new Student</Link></button> */}
+            <button><Link to="/addtaughtby">Add Course Taught By</Link></button>
             <div className="taughtby">
                 {taughtby.map(curr_course => (
                     <div className="taughtby" key={`${curr_course.C_Num}-${curr_course.Teach_ID}`}> 

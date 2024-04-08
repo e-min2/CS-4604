@@ -23,6 +23,7 @@ import AddCourse from "./pages/AddCourse";
 import UpdateCourse from "./pages/UpdateCourse";
 import TaughtBy from "./pages/TaughtBy";
 import UpdateTaughtBy from "./pages/UpdateTaughtBy";
+import AddTaughtBy from "./pages/AddTaughtBy";
 import "./style.css";
 
 
@@ -43,10 +44,11 @@ function App() {
             <Route path="/departments" element={<Departments/> }/>
             <Route path="/adddepartment" element={<AddDepartment />}/>
             <Route path="/updatedepartment/:name" element={<UpdateDepartment />}/>
-            <Route path="/courses" element={<Courses/> }/>
+            <Route path="/courses" element={<Courses/>}/>
             <Route path="/addcourse" element={<AddCourse />}/>
             <Route path="/updatecourse/:number/:prereq" element={<UpdateCourse />}/> 
-            <Route path="/taughtby" element={<TaughtBy />} />
+            <Route path="/taughtby" element={<TaughtBy/>}/>
+            <Route path="/addtaughtby" element={<AddTaughtBy/>}/>
             <Route path="/updatetaughtby/:cnumber/:profid" element={<UpdateTaughtBy />} />
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
