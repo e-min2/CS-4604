@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 
     host:"localhost",
     user:"root",
-    password:"W0rdP455!1!", // Put your password for your MySQL here
+    password:"", // Put your password for your MySQL here
     database:"grade_distribution_dbms" // Put where you named the dbms but I call it grade_system_dbms
 
 })
@@ -44,6 +44,17 @@ app.get("/instructors", (req, res) => {
 
 app.get("/departments", (req, res) => {
     const q = "SELECT * FROM DEPARTMENT";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data)
+        }
+    })
+})
+
+app.get("/taughtby", (req, res) => {
+    const q = "SELECT * FROM TAUGHT_BY";
     db.query(q, (err, data) => {
         if (err) {
             return res.json(err);
@@ -215,6 +226,32 @@ app.delete("/courses/param1=:number&param2=:prereq", (req, res)=>{
     })
 })
 
+app.delete("/taughtby/param1=:cnumber&param2=:profid", (req, res)=>{
+    const course_num = req.params.cnumber
+    const prof_id = req.params.profid;
+
+    console.log(course_num)
+    console.log(prof_id)
+
+    const q = "DELETE FROM TAUGHT_BY WHERE C_Num = ? AND Teach_ID = ?";
+
+    db.query(q, [course_num, prof_id], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            console.log(data)
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted in TAUGHT_BY");
+            }
+            else {
+                console.error("Error deleting taught by:", err); 
+                console.log("Not real");
+            }
+            return res.json("TAUGHT_BY has been deleted");
+        }
+    })
+})
+
 
 app.put("/students/:id", (req, res) => {
     const studentID = req.params.id;
@@ -224,6 +261,7 @@ app.put("/students/:id", (req, res) => {
     const q = "UPDATE STUDENT SET `Student_ID` = ?, `Student_Name` = ?, `Major` = ?, `Minor` = ?, `Year` = ?, `SGPA_Value` = ? WHERE Student_ID = ?";
 
     const values = [req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value, studentID];
+    // Body represents the data sent in from the students variable within the update function. 
 
     db.query(q, [...values, studentID], (err, data) => {
         if (err) {
@@ -246,8 +284,6 @@ app.put("/students/:id", (req, res) => {
 
 app.put("/instructors/:id", (req, res) => {
     const instructorID = req.params.id;
-    // Params represents the URL and the id part represents the id given in the URL. 
-    // If we want to update students, we need to have a specific ID we use to update it, in this case, their teacher ID. 
 
     const q = "UPDATE INSTRUCTOR SET `Teacher_ID` = ?, `Instructor_Name` = ?, `Inst_Dep` = ? WHERE Teacher_ID = ?";
 
@@ -266,8 +302,6 @@ app.put("/instructors/:id", (req, res) => {
 
 app.put("/departments/:name", (req, res) => {
     const departmentName = req.params.name;
-    // Params represents the URL and the id part represents the id given in the URL. 
-    // If we want to update students, we need to have a specific ID we use to update it, in this case, their teacher ID. 
 
     const q = "UPDATE DEPARTMENT SET `Department_Name` = ?, `Contact_Info` = ?, `Head_ID` = ? WHERE Department_Name = ?";
     console.log("real\n");
@@ -287,8 +321,6 @@ app.put("/departments/:name", (req, res) => {
 app.put("/courses/param1=:number&param2=:prereq", (req, res) => {
     const courseNumber = req.params.number
     const prereq = req.params.prereq;
-    // Params represents the URL and the id part represents the id given in the URL. 
-    // If we want to update students, we need to have a specific ID we use to update it, in this case, their teacher ID. 
 
     const q = "UPDATE COURSE SET `Course_Number` = ?, `Prerequisites` = ?, `Departments` = ?, `CGPA_Value` = ? WHERE Course_Number = ? AND Prerequisites = ?" ;
     const values = [req.body.Course_Number, req.body.Prerequisites, req.body.Departments, req.body.CGPA_Value];
@@ -303,6 +335,25 @@ app.put("/courses/param1=:number&param2=:prereq", (req, res) => {
         }
     })
 })
+
+app.put("/taughtby/param1=:cnumber&param2=:profid", (req, res) => {
+    const current_course_num = req.params.cnumber
+    const current_prof_id = req.params.profid;
+
+    const q = "UPDATE TAUGHT_BY SET `C_Num` = ?, `Teach_ID` = ? WHERE C_Num = ? AND Teach_ID = ?" ;
+    const values = [req.body.C_Num, req.body.Teach_ID];
+
+    db.query(q, [...values, current_course_num, current_prof_id], (err, data) => {
+        if (err) {
+            console.error("Error updating TAUGHT_BY:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully updated a TAUGHT_BY");
+            return res.json("TAUGHT_BY has been updated");
+        }
+    })
+})
+
 
 
 /*
