@@ -3,7 +3,7 @@ import { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Add = () => {
+const AddStudent = () => {
 
     const [student, setStudent] = useState ({
         Student_ID: null,
@@ -52,4 +52,4 @@ const Add = () => {
     )
 }
 
-export default Add
+export default AddStudent

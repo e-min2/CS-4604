@@ -8,8 +8,8 @@ const db = mysql.createConnection({
 
     host:"localhost",
     user:"root",
-    password:"", // Put your password for your MySQL here
-    database:"grade_system_dbms" // Put where you named the dbms but I call it grade_system_dbms
+    password:"W0rdP455!1!", // Put your password for your MySQL here
+    database:"grade_distribution_dbms" // Put where you named the dbms but I call it grade_system_dbms
 
 })
 
@@ -33,6 +33,29 @@ app.get("/students", (req, res) => {
 
 app.get("/instructors", (req, res) => {
     const q = "SELECT * FROM INSTRUCTOR";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data)
+        }
+    })
+})
+
+app.get("/departments", (req, res) => {
+    const q = "SELECT * FROM DEPARTMENT";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data)
+        }
+    })
+})
+
+
+app.get("/courses", (req, res) => {
+    const q = "SELECT * FROM COURSE";
     db.query(q, (err, data) => {
         if (err) {
             return res.json(err);
@@ -82,6 +105,36 @@ app.post("/instructors", (req, res) => {
     })
 })
 
+app.post("/departments", (req, res) => {
+    const q = "INSERT INTO DEPARTMENT (`Department_Name`, `Contact_Info`, `Head_ID`) VALUES (?)";
+    const values = [req.body.Department_Name, req.body.Contact_Info, req.body.Head_ID];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into DEPARTMENT:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new department");
+            return res.json("Department has been added");
+        }
+    })
+})
+
+app.post("/courses", (req, res) => {
+    const q = "INSERT INTO COURSE (`Course_Number`, `Prerequisites`, `Departments`, `CGPA_Value`) VALUES (?)";
+    const values = [req.body.Course_Number, req.body.Prerequisites, req.body.Departments, parseFloat(req.body.CGPA_Value)];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into COURSE:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new course");
+            return res.json("Course has been added");
+        }
+    })
+})
+
 
 app.delete("/students/:id", (req, res)=>{
     const studentID = req.params.id
@@ -115,6 +168,49 @@ app.delete("/instructors/:id", (req, res)=>{
         } else {
             console.log("Successfully deleted a professor");
             return res.json("Insutructor has been deleted");
+        }
+    })
+})
+
+app.delete("/departments/:name", (req, res)=>{
+    const departmentName = req.params.name
+    // Params represents the url and the id part represents the id given in the url. 
+    // If we wanna delete stuff we need to have a specific ID we use to delete it. 
+    // I don't think we need to account for deleting students from DECLARES table also since I enabled cascade on delete for the fk.
+
+    const q = "DELETE FROM DEPARTMENT WHERE Department_Name = ?"
+
+    db.query(q, [departmentName], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            console.log("Successfully deleted a department");
+            return res.json("Department has been deleted");
+        }
+    })
+})
+
+app.delete("/courses/param1=:number&param2=:prereq", (req, res)=>{
+    const courseNumber = req.params.number
+    const prereq = req.params.prereq
+
+    console.log(courseNumber)
+    console.log(prereq)
+
+    const q = "DELETE FROM COURSE WHERE Course_Number = ? AND Prerequisites = ?";
+
+    db.query(q, [courseNumber, prereq], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            console.log(data)
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted a new course");
+            }
+            else {
+                console.log("Not real");
+            }
+            return res.json("Course has been deleted");
         }
     })
 })
@@ -164,6 +260,46 @@ app.put("/instructors/:id", (req, res) => {
         } else {
             console.log("Successfully updated a professor");
             return res.json("Professor has been updated");
+        }
+    })
+})
+
+app.put("/departments/:name", (req, res) => {
+    const departmentName = req.params.name;
+    // Params represents the URL and the id part represents the id given in the URL. 
+    // If we want to update students, we need to have a specific ID we use to update it, in this case, their teacher ID. 
+
+    const q = "UPDATE DEPARTMENT SET `Department_Name` = ?, `Contact_Info` = ?, `Head_ID` = ? WHERE Department_Name = ?";
+    console.log("real\n");
+    const values = [req.body.Department_Name, req.body.Contact_Info, req.body.Head_ID];
+
+    db.query(q, [...values, departmentName], (err, data) => {
+        if (err) {
+            console.error("Error updating departments:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully updated a department");
+            return res.json("Department has been updated");
+        }
+    })
+})
+
+app.put("/courses/param1=:number&param2=:prereq", (req, res) => {
+    const courseNumber = req.params.number
+    const prereq = req.params.prereq;
+    // Params represents the URL and the id part represents the id given in the URL. 
+    // If we want to update students, we need to have a specific ID we use to update it, in this case, their teacher ID. 
+
+    const q = "UPDATE COURSE SET `Course_Number` = ?, `Prerequisites` = ?, `Departments` = ?, `CGPA_Value` = ? WHERE Course_Number = ? AND Prerequisites = ?" ;
+    const values = [req.body.Course_Number, req.body.Prerequisites, req.body.Departments, req.body.CGPA_Value];
+
+    db.query(q, [...values, courseNumber, prereq], (err, data) => {
+        if (err) {
+            console.error("Error updating courses:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully updated a course");
+            return res.json("Course has been updated");
         }
     })
 })
