@@ -24,6 +24,9 @@ import UpdateCourse from "./pages/UpdateCourse";
 import TaughtBy from "./pages/TaughtBy";
 import UpdateTaughtBy from "./pages/UpdateTaughtBy";
 import AddTaughtBy from "./pages/AddTaughtBy";
+import BelongsTo from "./pages/BelongsTo";
+import AddBelongsTo from "./pages/AddBelongsTo";
+import UpdateBelongsTo from "./pages/UpdateBelongsTo";
 import "./style.css";
 
 
@@ -50,6 +53,10 @@ function App() {
             <Route path="/taughtby" element={<TaughtBy/>}/>
             <Route path="/addtaughtby" element={<AddTaughtBy/>}/>
             <Route path="/updatetaughtby/:cnumber/:profid" element={<UpdateTaughtBy />} />
+            <Route path="/belongsto" element={<BelongsTo />} />
+            <Route path="/addbelongsto" element={<AddBelongsTo/>}/>
+            <Route path="/updatebelongsto/:department/:cnumber" element={<UpdateBelongsTo />} />
+
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
         </BrowserRouter>

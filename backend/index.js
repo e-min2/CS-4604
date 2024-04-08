@@ -8,7 +8,7 @@ const db = mysql.createConnection({
 
     host:"localhost",
     user:"root",
-    password:"", // Put your password for your MySQL here
+    password:"W0rdP455!1!", // Put your password for your MySQL here
     database:"grade_distribution_dbms" // Put where you named the dbms but I call it grade_system_dbms
 
 })
@@ -67,6 +67,17 @@ app.get("/taughtby", (req, res) => {
 
 app.get("/courses", (req, res) => {
     const q = "SELECT * FROM COURSE";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data)
+        }
+    })
+})
+
+app.get("/belongsto", (req, res) => {
+    const q = "SELECT * FROM BELONGS_TO";
     db.query(q, (err, data) => {
         if (err) {
             return res.json(err);
@@ -161,6 +172,21 @@ app.post("/taughtby", (req, res) => {
     })
 })
 
+app.post("/belongsto", (req, res) => {
+    const q = "INSERT INTO BELONGS_TO (`Dname`, `Course_Num`) VALUES (?)";
+    const values = [req.body.Dname, req.body.Course_Num];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into Belongs To:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new course belongs to");
+            return res.json("BELONGS_TO course has been added");
+        }
+    })
+})
+
 app.delete("/students/:id", (req, res)=>{
     const studentID = req.params.id
     // Params represents the url and the id part represents the id given in the url. 
@@ -216,11 +242,9 @@ app.delete("/departments/:name", (req, res)=>{
 })
 
 app.delete("/courses/param1=:number&param2=:prereq", (req, res)=>{
-    const courseNumber = req.params.number
-    const prereq = req.params.prereq
+    const courseNumber = req.params.number;
+    const prereq = req.params.prereq;
 
-    console.log(courseNumber)
-    console.log(prereq)
 
     const q = "DELETE FROM COURSE WHERE Course_Number = ? AND Prerequisites = ?";
 
@@ -236,6 +260,31 @@ app.delete("/courses/param1=:number&param2=:prereq", (req, res)=>{
                 console.log("Not real");
             }
             return res.json("Course has been deleted");
+        }
+    })
+})
+
+app.delete("/belongsto/param1=:department&param2=:cnumber", (req, res)=>{
+    const department = req.params.department;
+    const cnumber = req.params.cnumber;
+
+    console.log(department);
+    console.log(cnumber);
+
+    const q = "DELETE FROM BELONGS_TO WHERE Dname = ? AND Course_Num = ?";
+
+    db.query(q, [department, cnumber], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            console.log(data)
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted in BELONGS_TO");
+            }
+            else {
+                console.error("Error deleting belongs to:", err); 
+            }
+            return res.json("BELONGS_TO has been deleted");
         }
     })
 })
@@ -364,6 +413,24 @@ app.put("/taughtby/param1=:cnumber&param2=:profid", (req, res) => {
         } else {
             console.log("Successfully updated a TAUGHT_BY");
             return res.json("TAUGHT_BY has been updated");
+        }
+    })
+})
+
+app.put("/belongsto/param1=:department&param2=:cnumber", (req, res) => {
+    const department = req.params.department;
+    const cnumber = req.params.cnumber;
+
+    const q = "UPDATE BELONGS_TO SET `Dname` = ?, `Course_Num` = ? WHERE Dname = ? AND Course_Num = ?" ;
+    const values = [req.body.Dname, req.body.Course_Num];
+
+    db.query(q, [...values, department, cnumber], (err, data) => {
+        if (err) {
+            console.error("Error updating BELONGS_TO:", err); 
+            return res.json(err);
+        } else {
+            console.log("Successfully updated a BELONGS_TO");
+            return res.json("BELONGS_TO has been updated");
         }
     })
 })
