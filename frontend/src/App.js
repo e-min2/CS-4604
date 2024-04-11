@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -27,6 +28,8 @@ import AddTaughtBy from "./pages/AddTaughtBy";
 import BelongsTo from "./pages/BelongsTo";
 import AddBelongsTo from "./pages/AddBelongsTo";
 import UpdateBelongsTo from "./pages/UpdateBelongsTo";
+import Major from "./pages/Major";
+import AddMajor from "./pages/AddMajor";
 import "./style.css";
 
 
@@ -52,10 +55,12 @@ function App() {
             <Route path="/updatecourse/:number/:prereq" element={<UpdateCourse />}/> 
             <Route path="/taughtby" element={<TaughtBy/>}/>
             <Route path="/addtaughtby" element={<AddTaughtBy/>}/>
-            <Route path="/updatetaughtby/:cnumber/:profid" element={<UpdateTaughtBy />} />
+            <Route path="/updatetaughtby/:cnumber/:profid" element={<UpdateTaughtBy />}/>
             <Route path="/belongsto" element={<BelongsTo />} />
             <Route path="/addbelongsto" element={<AddBelongsTo/>}/>
-            <Route path="/updatebelongsto/:department/:cnumber" element={<UpdateBelongsTo />} />
+            <Route path="/updatebelongsto/:department/:cnumber" element={<UpdateBelongsTo />}/>
+            <Route path="/majors" element={<Major/>}/>
+            <Route path="/addmajor" element={<AddMajor/>}/>
 
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>

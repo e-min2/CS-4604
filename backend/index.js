@@ -87,6 +87,17 @@ app.get("/belongsto", (req, res) => {
     })
 })
 
+app.get("/majors", (req, res) => { 
+    const q = "SELECT * FROM MAJOR";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
 app.post("/students", (req, res) => {
     const q = "INSERT INTO STUDENT (`Student_ID`, `Student_Name`, `Major`, `Minor`, `Year`, `SGPA_Value`) VALUES (?)";
     const values = [req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value];
@@ -183,6 +194,21 @@ app.post("/belongsto", (req, res) => {
         } else {
             console.log("Successfully added a new course belongs to");
             return res.json("BELONGS_TO course has been added");
+        }
+    })
+})
+
+app.post("/majors", (req, res) => {
+    const q = "INSERT INTO MAJOR (`Major_Name`, `Major_Dep`) VALUES (?)";
+    const values = [req.body.Major_Name, req.body.Major_Dep]; 
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into Major:", err);
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new major to Major");
+            return res.json("New major has been added");
         }
     })
 })
@@ -311,6 +337,26 @@ app.delete("/taughtby/param1=:cnumber&param2=:profid", (req, res)=>{
                 console.log("Not real");
             }
             return res.json("TAUGHT_BY has been deleted");
+        }
+    })
+})
+
+app.delete("/majors/:name", (req, res) => {
+    const maj_name = req.params.name; 
+
+    const q = "DELETE FROM MAJOR WHERE Major_Name = ?"
+
+    db.query (q, [maj_name], (err, data) => {
+        if (err) {
+            return res.json(errr);
+        } else {
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted a Major");
+            } else {
+                console.error("Error deleting major:", err);
+                console.log("Not real");
+            }
+            return res.json("Major has been deleted");
         }
     })
 })
