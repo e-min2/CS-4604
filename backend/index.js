@@ -482,6 +482,26 @@ app.put("/belongsto/param1=:department&param2=:cnumber", (req, res) => {
 })
 
 
+app.put("/majors/:majname", (req, res) => {
+
+    const majname = req.params.majname;
+    const values = [req.body.Major_Name, req.body.Major_Dep]; 
+
+    const q = "UPDATE MAJOR SET `Major_Name` = ?, `Major_Dep` = ? WHERE Major_Name = ?"
+
+    db.query(q, [...values, majname], (err, data) => {
+        if (err) {
+            console.error("Error updating MAJOR:", err);
+            return res.json(err);
+        } else {
+            console.log("Scucessfully updated MAJOR");
+            return res.json("Updated MAJOR"); 
+        }
+    })
+
+})
+
+
 
 /*
  If you get an authentication error it's the issue that the TA mentioned that she had to fix, 

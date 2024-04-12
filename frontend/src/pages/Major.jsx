@@ -49,7 +49,7 @@ const Major = () => {
                         {/*This is just formatting to list out the student's name, major, minor, and gpa values*/}
                         <span><b>Department: </b> {majors.Major_Dep}, </span> 
                         <button className="delete" onClick={() =>handleDelete(majors.Major_Name)}>Delete Major</button>
-                        {/* <button className="update"><Link to={`/updatecourse/${course.Course_Number}/${course.Prerequisites}`}>Update</Link></button> */} 
+                        <button className="update"><Link to={`/updatemajor/${majors.Major_Name}`}>Update</Link></button> 
                     </div>
                 ))}
             </div>

@@ -30,7 +30,9 @@ import AddBelongsTo from "./pages/AddBelongsTo";
 import UpdateBelongsTo from "./pages/UpdateBelongsTo";
 import Major from "./pages/Major";
 import AddMajor from "./pages/AddMajor";
+import UpdateMajor from "./pages/UpdateMajor";
 import "./style.css";
+
 
 
 
@@ -61,6 +63,7 @@ function App() {
             <Route path="/updatebelongsto/:department/:cnumber" element={<UpdateBelongsTo />}/>
             <Route path="/majors" element={<Major/>}/>
             <Route path="/addmajor" element={<AddMajor/>}/>
+            <Route path="/updatemajor/:majname" element={<UpdateMajor/>}/>
 
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
