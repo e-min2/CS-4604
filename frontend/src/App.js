@@ -31,10 +31,10 @@ import UpdateBelongsTo from "./pages/UpdateBelongsTo";
 import Major from "./pages/Major";
 import AddMajor from "./pages/AddMajor";
 import UpdateMajor from "./pages/UpdateMajor";
+import Minor from "./pages/Minor";
+import AddMinor from "./pages/AddMinor";
+import UpdateMinor from "./pages/UpdateMinor";
 import "./style.css";
-
-
-
 
 
 function App() {
@@ -64,6 +64,9 @@ function App() {
             <Route path="/majors" element={<Major/>}/>
             <Route path="/addmajor" element={<AddMajor/>}/>
             <Route path="/updatemajor/:majname" element={<UpdateMajor/>}/>
+            <Route path="/minors" element={<Minor/>}/>
+            <Route path="/addminor" element={<AddMinor/>}/>
+            <Route path="/updateminor/:minname" element={<UpdateMinor/>}/>
 
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>

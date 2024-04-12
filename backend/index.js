@@ -98,6 +98,17 @@ app.get("/majors", (req, res) => {
     })
 })
 
+app.get("/minors", (req, res) => {
+    const q = "SELECT * FROM MINOR";
+    db.query(q, (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            return res.json(data);
+        }
+    })
+})
+
 app.post("/students", (req, res) => {
     const q = "INSERT INTO STUDENT (`Student_ID`, `Student_Name`, `Major`, `Minor`, `Year`, `SGPA_Value`) VALUES (?)";
     const values = [req.body.Student_ID, req.body.Student_Name, req.body.Major, req.body.Minor, req.body.Year, req.body.SGPA_Value];
@@ -212,6 +223,22 @@ app.post("/majors", (req, res) => {
         }
     })
 })
+
+app.post("/minors", (req, res) => {
+    const q = "INSERT INTO MINOR (`Minor_Name`, `Minor_Dep`) VALUES (?)";
+    const values = [req.body.Minor_Name, req.body.Minor_Dep]; 
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting into Minor:", err);
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new minor to MINOR");
+            return res.json("New minor has been added");
+        }
+    })
+})
+
 
 app.delete("/students/:id", (req, res)=>{
     const studentID = req.params.id
@@ -361,6 +388,26 @@ app.delete("/majors/:name", (req, res) => {
     })
 })
 
+app.delete("/minors/:name", (req, res) => {
+    const maj_name = req.params.name; 
+
+    const q = "DELETE FROM MINOR WHERE Minor_Name = ?"
+
+    db.query (q, [maj_name], (err, data) => {
+        if (err) {
+            return res.json(errr);
+        } else {
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted a Minor");
+            } else {
+                console.error("Error deleting minor:", err);
+                console.log("Not real");
+            }
+            return res.json("Minor has been deleted");
+        }
+    })
+})
+
 
 app.put("/students/:id", (req, res) => {
     const studentID = req.params.id;
@@ -487,15 +534,34 @@ app.put("/majors/:majname", (req, res) => {
     const majname = req.params.majname;
     const values = [req.body.Major_Name, req.body.Major_Dep]; 
 
-    const q = "UPDATE MAJOR SET `Major_Name` = ?, `Major_Dep` = ? WHERE Major_Name = ?"
+    const q = "UPDATE MAJOR SET `Major_Name` = ?, `Major_Dep` = ? WHERE Major_Name = ?";
 
     db.query(q, [...values, majname], (err, data) => {
         if (err) {
             console.error("Error updating MAJOR:", err);
             return res.json(err);
         } else {
-            console.log("Scucessfully updated MAJOR");
+            console.log("Sucessfully updated MAJOR");
             return res.json("Updated MAJOR"); 
+        }
+    })
+
+})
+
+app.put("/minors/:minname", (req, res) => {
+
+    const minname = req.params.majname;
+    const values = [req.body.Minor_Name, req.body.Minor_Dep]; 
+
+    const q = "UPDATE MINOR SET `Minor_Name` = ?, `Minor_Dep` = ? WHERE Minor_Name = ?"
+
+    db.query(q, [...values, minname], (err, data) => {
+        if (err) {
+            console.error("Error updating MINOR:", err);
+            return res.json(err);
+        } else {
+            console.log("Sucessfully updated MINOR");
+            return res.json("Updated MINOR"); 
         }
     })
 
