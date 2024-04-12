@@ -26,8 +26,9 @@ CREATE TABLE `belongs_to` (
   `Dname` varchar(255) NOT NULL,
   `Course_Num` varchar(255) NOT NULL,
   PRIMARY KEY (`Dname`,`Course_Num`),
-  KEY `Course_Num` (`Course_Num`),
-  CONSTRAINT `belongs_to_ibfk_1` FOREIGN KEY (`Dname`) REFERENCES `department` (`Department_Name`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `FK_CNUM` (`Course_Num`),
+  CONSTRAINT `belongs_to_ibfk_1` FOREIGN KEY (`Dname`) REFERENCES `department` (`Department_Name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_CNUM` FOREIGN KEY (`Course_Num`) REFERENCES `course` (`Course_Number`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -65,7 +66,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES ('CS 1114','None','Computer Science',2.34),('CS 2104','CS 1114','Computer Science',3.50),('CS 2104','MATH 1205','Computer Science',3.50),('CS 2104','MATH 1225','Computer Science',3.50),('CS 2104','MATH 1526','Computer Science',3.50),('CS 2114','CS 1114','Computer Science',3.04),('CS 2505','CS 2114','Computer Science',3.31),('CS 2506','CS 2505','Computer Science',3.01),('CS 2506','MATH 2534','Computer Science',3.01),('CS 2506','MATH 3034','Computer Science',3.01),('CS 3114','CS 2505','Computer Science',3.40),('CS 3214','CS 2506','Computer Science',3.05),('CS 3214','ECE 2564','Computer Science',3.05),('CS 3214','ECE 3574','Computer Science',3.05),('CS 3274','CS 2506','Computer Science',3.15),('CS 3304','CS 3114','Computer Science',3.17),('CS 3604','COMM 2004','Computer Science',3.93),('CS 3604','CS 2114','Computer Science',3.93),('CS 3704','CS 3114','Computer Science',3.84),('CS 3714','CS 2114','Computer Science',3.46),('CS 3724','CS 1114','Computer Science',3.65),('CS 3744','CS 2114','Computer Science',3.72),('CS 3754','CS 2114','Computer Science',3.74),('CS 4104','CS 3114','Computer Science',3.26),('CS 4114','MATH 3134','Computer Science',3.60),('CS 4124','Math 3134','Computer Science',2.44),('CS 4254','CS 3214','Computer Science',3.27),('CS 4264','CS 3214','Computer Science',3.31),('CS 4804','CS 3114','Computer Science',3.25),('CS 4824','CS 2114','Computer Science',3.66);
+INSERT INTO `course` VALUES ('CS 1114','None','Computer Science',2.34),('CS 2104','CS 1114','Computer Science',3.50),('CS 2104','MATH 1205','Computer Science',3.50),('CS 2104','MATH 1225','Computer Science',3.50),('CS 2104','MATH 1526','Computer Science',3.50),('CS 2114','CS 1114','Computer Science',3.04),('CS 2505','CS 2114','Computer Science',3.31),('CS 2506','CS 2505','Computer Science',3.01),('CS 2506','MATH 2534','Computer Science',3.01),('CS 2506','MATH 3034','Computer Science',3.01),('CS 3114','CS 2505','Computer Science',3.40),('CS 3214','CS 2506','Computer Science',3.05),('CS 3214','ECE 2564','Computer Science',3.05),('CS 3214','ECE 3574','Computer Science',3.05),('CS 3274','CS 2506','Computer Science',3.15),('CS 3304','CS 3114','Computer Science',3.17),('CS 3604','COMM 2004','Computer Science',3.93),('CS 3604','CS 2114','Computer Science',3.93),('CS 3704','CS 3114','Computer Science',3.84),('CS 3714','CS 2114','Computer Science',3.46),('CS 3724','CS 1114','Computer Science',3.65),('CS 3744','CS 2114','Computer Science',3.72),('CS 3754','CS 2114','Computer Science',3.74),('CS 4104','CS 3114','Computer Science',3.26),('CS 4114','MATH 3134','Computer Science',3.60),('CS 4124','Math 3134','Computer Science',2.44),('CS 4254','CS 3214','Computer Science',3.27),('CS 4264','CS 3214','Computer Science',3.31),('CS 4804','CS 3114','Computer Science',3.25),('CS 4824','CS 2114','Computer Science',3.66),('test update','None','Computer Science',4.00);
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +96,7 @@ CREATE TABLE `declares` (
 
 LOCK TABLES `declares` WRITE;
 /*!40000 ALTER TABLE `declares` DISABLE KEYS */;
-INSERT INTO `declares` VALUES (906301288,'Accounting','None'),(906311114,'Business','None'),(906311115,'Business','None'),(906311130,'Business','None'),(906311160,'Business','Math'),(906311170,'Business','None'),(906311190,'Business','Math'),(906311117,'Chemistry','None'),(906311118,'Chemistry','Math'),(906311150,'Chemistry','Math'),(906311116,'Computer Engineering','Computer Science'),(906311110,'Computer Science ','None'),(906311111,'Computer Science ','Math'),(906311112,'Computer Science ','None'),(906311113,'Computer Science ','None'),(906311140,'Computer Science ','Math'),(906330999,'Computer Science ','Math'),(906311124,'Math','Computer Science'),(906311180,'Mechnical Engineering','None'),(906311119,'Mining Engineering','None'),(906311120,'Photonics','Math'),(906311100,'Secure Computing','None');
+INSERT INTO `declares` VALUES (906311114,'Business','None'),(906311115,'Business','None'),(906311130,'Business','None'),(906311160,'Business','Math'),(906311170,'Business','None'),(906311190,'Business','Math'),(906301288,'Chemistry','Literature'),(906311117,'Chemistry','None'),(906311118,'Chemistry','Math'),(906311150,'Chemistry','Math'),(906311116,'Computer Engineering','Computer Science'),(906311111,'Computer Science ','Math'),(906311112,'Computer Science ','None'),(906311113,'Computer Science ','None'),(906311140,'Computer Science ','Math'),(906330999,'Computer Science ','Math'),(906311124,'Math','Computer Science'),(906311180,'Mechnical Engineering','None'),(906311119,'Mining Engineering','None'),(906311120,'Photonics','Math');
 /*!40000 ALTER TABLE `declares` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +113,7 @@ CREATE TABLE `department` (
   `Head_ID` int DEFAULT NULL,
   PRIMARY KEY (`Department_Name`),
   KEY `department_ibfk_1` (`Head_ID`),
-  CONSTRAINT `department_ibfk_1` FOREIGN KEY (`Head_ID`) REFERENCES `instructor` (`Teacher_ID`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `department_ibfk_1` FOREIGN KEY (`Head_ID`) REFERENCES `instructor` (`Teacher_ID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,7 +163,7 @@ CREATE TABLE `instructor` (
   `Inst_Dep` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Teacher_ID`),
   KEY `fk_inst_dep` (`Inst_Dep`),
-  CONSTRAINT `fk_inst_dep` FOREIGN KEY (`Inst_Dep`) REFERENCES `department` (`Department_Name`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `fk_inst_dep` FOREIGN KEY (`Inst_Dep`) REFERENCES `department` (`Department_Name`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -172,8 +173,33 @@ CREATE TABLE `instructor` (
 
 LOCK TABLES `instructor` WRITE;
 /*!40000 ALTER TABLE `instructor` DISABLE KEYS */;
-INSERT INTO `instructor` VALUES (906340000,'Cal Ribbens','Computer Science'),(906341000,'Amanda Morris','Chemistry'),(906341100,'Robert Davidson','Accounting and Information Systems'),(906341200,'Margie Lee','Biomedical Sciences and Pathobiology'),(906341210,'Jennifer Hart','History'),(906341220,'Timothy Luke','Political Science'),(906341230,'Godmar Back','Computer Science'),(906341240,'David McPherson','Computer Science'),(906341250,'Dimitrios Nikolopoulos','Computer Science'),(906341260,'Daniel Dunlap','Computer Science'),(906341270,'Bo Ji','Computer Science'),(906341280,'Sharath Raghvendra','Computer Science'),(906341290,'Allyson Senger','Computer Science'),(906341300,'Renee Boyer','Food Science and Technology'),(906341330,'Patrick Sullivan','Computer Science'),(906341340,'John Wenskovitch','Computer Science'),(906341350,'Dan Williams','Computer Science'),(906341360,'Ali Butt','Computer Science'),(906341370,'Onyeka Emebo','Computer Science'),(906341380,'Lenwood Heath','Computer Science'),(906341400,'Quinton Nottingham','Business Information Technology'),(906341500,'Mark Embree','Computational Modeling and Data Analytics'),(906341600,'Tom Woteki','Data Science'),(906341700,'Ashley Reed','English'),(906341800,'Kelly Trogdon','Philosophy'),(906341900,'Jennifer Johnson','Sociology'),(906342000,'Stefan Roberts','Biochemistry'),(906343000,'Luke Lester','Electrical and Computer Engineering'),(906344000,'David Gerrard','Animal Sciences'),(906345000,'Scott Huxtable','Mechanical Engineering'),(906346000,'Mark Widdowson','Civil and Environmental Engineering'),(906347000,'Aaron Noble','Mining and Minerals Engineering'),(906348000,'Sarah Reznikoff','Mathematics'),(906349000,'Jadrian Wooten','Economics');
+INSERT INTO `instructor` VALUES (111222333,'test test','Computer Science'),(123456789,'test update instructor','Computer Science'),(906340000,'Cal Ribbens','Computer Science'),(906341000,'Amanda Morris','Chemistry'),(906341100,'Robert Davidson','Accounting and Information Systems'),(906341200,'Margie Lee','Biomedical Sciences and Pathobiology'),(906341210,'Jennifer Hart','History'),(906341220,'Timothy Luke','Political Science'),(906341230,'Godmar Back','Computer Science'),(906341240,'David McPherson','Computer Science'),(906341250,'Dimitrios Nikolopoulos','Computer Science'),(906341260,'Daniel Dunlap','Computer Science'),(906341270,'Bo Ji','Computer Science'),(906341280,'Sharath Raghvendra','Computer Science'),(906341290,'Allyson Senger','Computer Science'),(906341300,'Renee Boyer','Food Science and Technology'),(906341330,'Patrick Sullivan','Computer Science'),(906341340,'John Wenskovitch','Computer Science'),(906341350,'Dan Williams','Computer Science'),(906341360,'Ali Butt','Computer Science'),(906341370,'Onyeka Emebo','Computer Science'),(906341380,'Lenwood Heath','Computer Science'),(906341400,'Quinton Nottingham','Business Information Technology'),(906341500,'Mark Embree','Computational Modeling and Data Analytics'),(906341600,'Tom Woteki','Data Science'),(906341700,'Ashley Reed','English'),(906341800,'Kelly Trogdon','Philosophy'),(906341900,'Jennifer Johnson','Sociology'),(906342000,'Stefan Roberts','Biochemistry'),(906343000,'Luke Lester','Electrical and Computer Engineering'),(906344000,'David Gerrard','Animal Sciences'),(906345000,'Scott Huxtable','Mechanical Engineering'),(906346000,'Mark Widdowson','Civil and Environmental Engineering'),(906347000,'Aaron Noble','Mining and Minerals Engineering'),(906348000,'Sarah Reznikoff','Mathematics'),(906349000,'Jadrian Wooten','Economics');
 /*!40000 ALTER TABLE `instructor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `login`
+--
+
+DROP TABLE IF EXISTS `login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `login` (
+  `Email` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `Account Type` varchar(255) NOT NULL,
+  PRIMARY KEY (`Email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `login`
+--
+
+LOCK TABLES `login` WRITE;
+/*!40000 ALTER TABLE `login` DISABLE KEYS */;
+INSERT INTO `login` VALUES ('teststudent@gmail.com','123','Student');
+/*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -198,7 +224,7 @@ CREATE TABLE `major` (
 
 LOCK TABLES `major` WRITE;
 /*!40000 ALTER TABLE `major` DISABLE KEYS */;
-INSERT INTO `major` VALUES ('Accounting','Accounting and Information Systems'),('Accounting and Information Systems Audit','Accounting and Information Systems'),('Cybersecurity Management and Analytics','Business Information Technology'),('Decision Support System','Business Information Technology'),('Operation Supply Chain Management','Business Information Technology'),('Chemistry','Chemistry'),('Civil Engineering','Civil and Environmental Engineering'),('Computer Science ','Computer Science'),('Data Centric Computing','Computer Science'),('Secure Computing','Computer Science'),('Business','Economics'),('Chip-Scale Integration','Electrical and Computer Engineering'),('Communications and Networking','Electrical and Computer Engineering'),('Computer Engineering','Electrical and Computer Engineering'),('Machine Learning','Electrical and Computer Engineering'),('Photonics','Electrical and Computer Engineering'),('Food Science','Food Science and Technology'),('Math','Mathematics'),('Automotive Engineering','Mechanical Engineering'),('Mechnical Engineering','Mechanical Engineering'),('Robotics and Mechatronics','Mechanical Engineering'),('Mining Engineering','Mining and Minerals Engineering');
+INSERT INTO `major` VALUES ('Accounting','Accounting and Information Systems'),('Accounting and Information Systems Audit','Accounting and Information Systems'),('Cybersecurity Management and Analytics','Business Information Technology'),('Decision Support System','Business Information Technology'),('Operation Supply Chain Management','Business Information Technology'),('Chemistry','Chemistry'),('Civil Engineering','Civil and Environmental Engineering'),('Computer Science ','Computer Science'),('Data Centric Computing','Computer Science'),('Secure Computing','Computer Science'),('test2','Computer Science'),('Business','Economics'),('Chip-Scale Integration','Electrical and Computer Engineering'),('Communications and Networking','Electrical and Computer Engineering'),('Computer Engineering','Electrical and Computer Engineering'),('Machine Learning','Electrical and Computer Engineering'),('Photonics','Electrical and Computer Engineering'),('Food Science','Food Science and Technology'),('Math','Mathematics'),('Automotive Engineering','Mechanical Engineering'),('Mechnical Engineering','Mechanical Engineering'),('Robotics and Mechatronics','Mechanical Engineering'),('Mining Engineering','Mining and Minerals Engineering');
 /*!40000 ALTER TABLE `major` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +250,7 @@ CREATE TABLE `minor` (
 
 LOCK TABLES `minor` WRITE;
 /*!40000 ALTER TABLE `minor` DISABLE KEYS */;
-INSERT INTO `minor` VALUES ('None',NULL),('Chemistry','Chemistry'),('Computer Science','Computer Science'),('Cyber Security','Computer Science'),('Human Computer Interaction','Computer Science'),('Creative Writing','English'),('Literature','English'),('Food Science','Food Science and Technology'),('War and Society','History'),('Math','Mathematics'),('Nuclear Engineering','Mechanical Engineering'),('Philosohpy','Philosophy'),('European Engagement','Political Science'),('European Studies','Political Science'),('Global Engagement','Political Science'),('International Public Policy','Political Science'),('International Relations','Political Science'),('International Studies','Political Science'),('Professional and Technical Writing','Political Science'),('Transatlantic Studies','Political Science'),('Sociology','Sociology');
+INSERT INTO `minor` VALUES ('None',NULL),('Chemistry','Chemistry'),('Computer Science','Computer Science'),('Cyber Security','Computer Science'),('Human Computer Interaction','Computer Science'),('Creative Writing','English'),('Literature','English'),('Food Science','Food Science and Technology'),('War and Society','History'),('Math','Mathematics'),('testing add minor','Mathematics'),('Nuclear Engineering','Mechanical Engineering'),('Philosohpy','Philosophy'),('European Engagement','Political Science'),('European Studies','Political Science'),('Global Engagement','Political Science'),('International Public Policy','Political Science'),('International Relations','Political Science'),('International Studies','Political Science'),('Professional and Technical Writing','Political Science'),('Transatlantic Studies','Political Science'),('Sociology','Sociology');
 /*!40000 ALTER TABLE `minor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,7 +280,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (906301288,'King Whopper','Chemistry','English','Sophmore',4.00),(906311100,'Alex Hudson','Secure Computing','None','Senior',3.95),(906311110,'John Papas','Computer Science','Math','Senior',4.00),(906311111,'John Doe','Computer Science','Math','Senior',3.80),(906311112,'Jane Doe','Computer Science','None','Senior',3.56),(906311113,'Wendy FourFour','Computer Science','None','Freshman',3.40),(906311114,'John Jobless','Computer Science','Math','Senior',3.85),(906311115,'Jim Beam','Business','None','Senior',3.85),(906311116,'Moe Burrito','Computer Engineering','Computer Science','Sophmore',3.20),(906311117,'Ronald Mcdonald','Chemistry','None','Sophmore',3.55),(906311118,'John Deer','Chemistry','Math','Sophmore',3.70),(906311119,'Samantha White','Mining Engineering','None','Sophmore',3.20),(906311120,'Sammy Hardys','Photonics','Math','Freshman',3.47),(906311124,'Taco Bells','Math','Computer Science','Junior',3.70),(906311130,'Homer Simpson','Business','None','Freshman',2.70),(906311140,'Baja Blasts','Computer Science','Math','Senior',3.78),(906311150,'Olives Garden','Chemistry','Math','Senior',3.78),(906311160,'Ham Burg','Business','Math','Freshman',2.45),(906311170,'Tammy Tam','Business','None','Freshman',3.46),(906311180,'Ham Sammy','Mechanical Engineering','None','Senior',2.70),(906311190,'Tim Sands','Business','Math','Senior',4.00),(906330999,'Mac Big','Computer Science','Math','Junior',4.00);
+INSERT INTO `student` VALUES (906301288,'King Whopper','Chemistry','Literature','Sophmore',4.00),(906311111,'John Doe','Computer Science','Math','Senior',3.80),(906311112,'Jane Doe','Computer Science','None','Senior',3.56),(906311113,'Wendy FourFour','Computer Science','None','Freshman',3.40),(906311114,'John Jobless','Computer Science','Math','Senior',3.85),(906311115,'Jim Beam','Business','None','Senior',3.85),(906311116,'Moe Burrito','Computer Engineering','Computer Science','Sophmore',3.20),(906311117,'Ronald Mcdonald','Chemistry','None','Sophmore',3.55),(906311118,'John Deer','Chemistry','Math','Sophmore',3.70),(906311119,'Samantha White','Mining Engineering','None','Sophmore',3.20),(906311120,'Sammy Hardys','Photonics','Math','Freshman',3.47),(906311124,'Taco Bells','Math','Computer Science','Junior',3.70),(906311130,'Homer Simpson','Business','None','Freshman',2.70),(906311140,'Baja Blasts','Computer Science','Math','Senior',3.78),(906311150,'Olives Garden','Chemistry','Math','Senior',3.78),(906311160,'Ham Burg','Business','Math','Freshman',2.45),(906311170,'Tammy Tam','Business','None','Freshman',3.46),(906311180,'Ham Sammy','Mechanical Engineering','None','Senior',2.70),(906311190,'Tim Sands','Business','Math','Senior',4.00),(906330999,'Mac Big','Computer Science','Math','Junior',4.00);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +307,7 @@ CREATE TABLE `taught_by` (
 
 LOCK TABLES `taught_by` WRITE;
 /*!40000 ALTER TABLE `taught_by` DISABLE KEYS */;
-INSERT INTO `taught_by` VALUES ('CS 3214',906341230),('CS 1114',906341240),('CS 2505',906341240),('CS 3304',906341240),('CS 2506',906341250),('CS 3604',906341260),('CS 4104',906341270),('CS 3114',906341280),('CS 4104',906341280),('CS 1114',906341290),('CS 2505',906341290),('CS 2114',906341330),('CS 3114',906341330),('CS 2506',906341340),('CS 3214',906341350),('CS 3214',906341360),('CS 2104',906341370),('CS 2114',906341370),('CS 3304',906341370),('CS 4114',906341380);
+INSERT INTO `taught_by` VALUES ('test update',123456789),('CS 3214',906341230),('CS 1114',906341240),('CS 2505',906341240),('CS 3304',906341240),('CS 2506',906341250),('CS 3604',906341260),('CS 4104',906341270),('CS 3114',906341280),('CS 4104',906341280),('CS 1114',906341290),('CS 2505',906341290),('CS 2114',906341330),('CS 3114',906341330),('CS 2506',906341340),('CS 3214',906341350),('CS 3214',906341360),('CS 2104',906341370),('CS 2114',906341370),('CS 3304',906341370),('CS 4114',906341380);
 /*!40000 ALTER TABLE `taught_by` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -294,4 +320,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-03 16:45:53
+-- Dump completed on 2024-04-12  3:31:52

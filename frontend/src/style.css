@@ -44,4 +44,23 @@ input{
     cursor: pointer;
 }
 
+.login {
+    display: flex; /* Equivalent to d-flex */
+    height: 100vh; /* Equivalent to vh-100 */
+    justify-content: center; /* Equivalent to justify-content-center */
+    align-items: center; /* Equivalent to align-items-center (correcting the typo from 'alight') */
+    background-color: #007bff; /* Assuming the default Bootstrap primary color */
+    width: 100vw; /* This will make the element span the entire width of the screen */
+    left: 50%; /* Move the element to the middle */
+    right: 50%;
+    margin-left: -50vw; /* Pull the element back to the left edge */
+    margin-right: -50vw; /* Ensure it stretches to the right edge */
+    padding: 0px;
+}
+
+.box {
+    padding: 20px; /* Equivalent to p-3, assuming 1rem is the size used by the framework */
+    background-color: white; /* Equivalent to bg-blue */
+    width: 20%; /* Equivalent to w-25 */
+}
 

@@ -20,6 +20,23 @@ app.get("/", (req, res) => {
     res.json("hello this is the backend")
 })
 
+app.post('/login', (req, res) => {
+    const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
+    const values = [req.body.email, req.body.password];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            return res.json("Login failed");
+        } else {
+            if (data.length > 0) {
+                return res.json("Login successful");
+            } else {
+                return res.json("No record");   
+            }
+        }
+    })
+})
+
 app.get("/students", (req, res) => {
     const q = "SELECT * FROM STUDENT";
     db.query(q, (err, data) => { // This will query our database db and return a json response of either error or the db data
