@@ -8,8 +8,8 @@ const db = mysql.createConnection({
 
     host:"localhost",
     user:"root",
-    password:"", // Put your password for your MySQL here
-    database:"" // Put where you named the dbms but I call it grade_system_dbms
+    password:"@Pup1324567", // Put your password for your MySQL here
+    database:"grade_system_dbms" // Put where you named the dbms but I call it grade_system_dbms
 
 })
 
