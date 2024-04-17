@@ -8,8 +8,8 @@ const db = mysql.createConnection({
 
     host:"localhost",
     user:"root",
-    password:"@Pup1324567", // Put your password for your MySQL here
-    database:"grade_system_dbms" // Put where you named the dbms but I call it grade_system_dbms
+    password:"", // Put your password for your MySQL here
+    database:"" // Put where you named the dbms but I call it grade_system_dbms
 
 })
 
@@ -125,6 +125,28 @@ app.get("/minors", (req, res) => {
         }
     })
 })
+
+app.get("/courses/:instructorname", (req, res) => {
+    const instructorName = req.params.instructorname;
+
+    const q = `
+        SELECT DISTINCT c.Course_Number, c.CGPA_VALUE
+        FROM COURSE c
+        JOIN TAUGHT_BY tb ON c.Course_Number = tb.C_Num
+        JOIN INSTRUCTOR i ON tb.Teach_ID = i.Teacher_ID
+        WHERE i.Instructor_Name = ?
+    `;
+
+    db.query(q, [instructorName], (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(data)
+            console.log("Showing instructor's courses worked!!");
+            res.json(data);
+        }
+    });
+});
 
 app.post("/students", (req, res) => {
     const q = "INSERT INTO STUDENT (`Student_ID`, `Student_Name`, `Major`, `Minor`, `Year`, `SGPA_Value`) VALUES (?)";
