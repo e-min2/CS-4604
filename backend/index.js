@@ -141,12 +141,23 @@ app.get("/courses/:instructorname", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(data)
             console.log("Showing instructor's courses worked!!");
-            res.json(data);
+            return res.json(data);
         }
     });
 });
+
+app.get("/users", (req, res) => {
+    const q = "SELECT * FROM LOGIN"
+
+    db.query(q, (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(data);
+        }
+    })
+})
 
 app.post("/students", (req, res) => {
     const q = "INSERT INTO STUDENT (`Student_ID`, `Student_Name`, `Major`, `Minor`, `Year`, `SGPA_Value`) VALUES (?)";
@@ -443,6 +454,25 @@ app.delete("/minors/:name", (req, res) => {
                 console.log("Not real");
             }
             return res.json("Minor has been deleted");
+        }
+    })
+})
+
+app.delete("/users/:email", (req, res) => {
+    const user_email = req.params.email; 
+    const q = "DELETE FROM LOGIN WHERE Email = ?"; 
+
+    db.query(q, [user_email], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted an account");
+            } else {
+                console.error("Error deleting an account:", err);
+                console.log("note real");
+            }
+            return res.json("Successfully deleted an account");
         }
     })
 })

@@ -37,6 +37,7 @@ import UpdateMinor from "./pages/UpdateMinor";
 import Login from "./pages/Login";
 import CourseSearch from "./pages/CourseSearch";
 import InstructorSearch from "./pages/InstructorSearch";
+import Users from "./pages/Users";
 import "./style.css";
 import { Class } from "@mui/icons-material";
 
@@ -75,6 +76,7 @@ function App() {
             <Route path="/login" element={<Login/>}/>
             <Route path="/coursesearch" element={<CourseSearch/>}/>
             <Route path="/instructorsearch" element={<InstructorSearch/>}/>
+            <Route path="/users" element={<Users/>}/>
 
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
