@@ -20,23 +20,6 @@ app.get("/", (req, res) => {
     res.json("hello this is the backend")
 })
 
-app.post('/login', (req, res) => {
-    const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
-    const values = [req.body.email, req.body.password];
-
-    db.query(q, [values], (err, data) => {
-        if (err) {
-            return res.json("Login failed");
-        } else {
-            if (data.length > 0) {
-                return res.json("Login successful");
-            } else {
-                return res.json("No record");   
-            }
-        }
-    })
-})
-
 app.get("/students", (req, res) => {
     const q = "SELECT * FROM STUDENT";
     db.query(q, (err, data) => { // This will query our database db and return a json response of either error or the db data
@@ -155,6 +138,23 @@ app.get("/users", (req, res) => {
             console.log(err);
         } else {
             res.json(data);
+        }
+    })
+})
+
+app.post('/login', (req, res) => {
+    const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
+    const values = [req.body.email, req.body.password];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            return res.json("Login failed");
+        } else {
+            if (data.length > 0) {
+                return res.json("Login successful");
+            } else {
+                return res.json("No record");   
+            }
         }
     })
 })
@@ -285,6 +285,21 @@ app.post("/minors", (req, res) => {
         } else {
             console.log("Successfully added a new minor to MINOR");
             return res.json("New minor has been added");
+        }
+    })
+})
+
+app.post("/users", (req, res) => {
+    const q = "INSERT INTO LOGIN (`Email`, `Password`, `Account_Type`) VALUES (?)";
+    const values = [req.body.Email, req.body.Password, req.body.Account_Type];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting a user into LOGIN:", err);
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new user to LOGIN");
+            return res.json("New user has been added");
         }
     })
 })
@@ -634,6 +649,24 @@ app.put("/minors/:minname", (req, res) => {
         }
     })
 
+})
+
+
+app.put("/updateuser/:email", (req, res) => {
+    const email = req.params.email;
+    const values = [req.body.Email, req.body.Password, req.body.Account_Type];
+
+    const q = "UPDATE LOGIN SET `Email` = ?, `Password` = ?, `Account_Type` = ? WHERE Email = ?";
+
+    db.query(q, [...values, email], (err, data) => {
+        if (err) {
+            console.error("Error updating LOGIN:", err);
+            return res.json(err);
+        } else {
+            console.log("Succesfully updated User");
+            return res.json("Updated LOGIN"); 
+        }
+    })
 })
 
 
