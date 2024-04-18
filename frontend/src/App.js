@@ -36,6 +36,12 @@ import AddMinor from "./pages/AddMinor";
 import UpdateMinor from "./pages/UpdateMinor";
 import Login from "./pages/Login";
 import AdminLanding from "./pages/AdminLanding";
+import CourseSearch from "./pages/CourseSearch";
+import InstructorSearch from "./pages/InstructorSearch";
+import Users from "./pages/Users";
+import AddUser from "./pages/AddUser";
+import UpdateUser from "./pages/UpdateUser";
+import { Class } from "@mui/icons-material";
 import "./style.css";
 
 
@@ -72,8 +78,13 @@ function App() {
             <Route path="/updateminor/:minname" element={<UpdateMinor/>}/>
             <Route element={<AdminLanding />} path="/landing" />
             <Route element={<Login />} path="/" />
+            {/* <Route path="/login" element={<Login/>}/> */}
+            <Route path="/coursesearch" element={<CourseSearch/>}/>
+            <Route path="/instructorsearch" element={<InstructorSearch/>}/>
+            <Route path="/users" element={<Users/>}/>
+            <Route path="/adduser" element={<AddUser/>}/>
+            <Route path="/updateuser/:email" element={<UpdateUser/>}/>
 
-            {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
         </BrowserRouter>
     </div>

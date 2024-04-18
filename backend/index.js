@@ -20,23 +20,6 @@ app.get("/", (req, res) => {
     res.json("hello this is the backend")
 })
 
-app.post('/login', (req, res) => {
-    const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
-    const values = [req.body.email, req.body.password];
-
-    db.query(q, [values], (err, data) => {
-        if (err) {
-            return res.json("Login failed");
-        } else {
-            if (data.length > 0) {
-                return res.json("Login successful");
-            } else {
-                return res.json("No record");   
-            }
-        }
-    })
-})
-
 app.get("/students", (req, res) => {
     const q = "SELECT * FROM STUDENT";
     db.query(q, (err, data) => { // This will query our database db and return a json response of either error or the db data
@@ -122,6 +105,56 @@ app.get("/minors", (req, res) => {
             return res.json(err);
         } else {
             return res.json(data);
+        }
+    })
+})
+
+app.get("/courses/:instructorname", (req, res) => {
+    const instructorName = req.params.instructorname;
+
+    const q = `
+        SELECT DISTINCT c.Course_Number, c.CGPA_VALUE
+        FROM COURSE c
+        JOIN TAUGHT_BY tb ON c.Course_Number = tb.C_Num
+        JOIN INSTRUCTOR i ON tb.Teach_ID = i.Teacher_ID
+        WHERE i.Instructor_Name = ?
+    `;
+
+    db.query(q, [instructorName], (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Showing instructor's courses worked!!");
+            return res.json(data);
+        }
+    });
+});
+
+app.get("/users", (req, res) => {
+    const q = "SELECT * FROM LOGIN"
+
+    db.query(q, (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(data);
+        }
+    })
+})
+
+app.post('/login', (req, res) => {
+    const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
+    const values = [req.body.email, req.body.password];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            return res.json("Login failed");
+        } else {
+            if (data.length > 0) {
+                return res.json("Login successful");
+            } else {
+                return res.json("No record");   
+            }
         }
     })
 })
@@ -252,6 +285,21 @@ app.post("/minors", (req, res) => {
         } else {
             console.log("Successfully added a new minor to MINOR");
             return res.json("New minor has been added");
+        }
+    })
+})
+
+app.post("/users", (req, res) => {
+    const q = "INSERT INTO LOGIN (`Email`, `Password`, `Account_Type`) VALUES (?)";
+    const values = [req.body.Email, req.body.Password, req.body.Account_Type];
+
+    db.query(q, [values], (err, data) => {
+        if (err) {
+            console.error("Error inserting a user into LOGIN:", err);
+            return res.json(err);
+        } else {
+            console.log("Successfully added a new user to LOGIN");
+            return res.json("New user has been added");
         }
     })
 })
@@ -425,6 +473,25 @@ app.delete("/minors/:name", (req, res) => {
     })
 })
 
+app.delete("/users/:email", (req, res) => {
+    const user_email = req.params.email; 
+    const q = "DELETE FROM LOGIN WHERE Email = ?"; 
+
+    db.query(q, [user_email], (err, data) => {
+        if (err) {
+            return res.json(err);
+        } else {
+            if (data.affectedRows > 0) {
+                console.log("Successfully deleted an account");
+            } else {
+                console.error("Error deleting an account:", err);
+                console.log("note real");
+            }
+            return res.json("Successfully deleted an account");
+        }
+    })
+})
+
 
 app.put("/students/:id", (req, res) => {
     const studentID = req.params.id;
@@ -582,6 +649,24 @@ app.put("/minors/:minname", (req, res) => {
         }
     })
 
+})
+
+
+app.put("/updateuser/:email", (req, res) => {
+    const email = req.params.email;
+    const values = [req.body.Email, req.body.Password, req.body.Account_Type];
+
+    const q = "UPDATE LOGIN SET `Email` = ?, `Password` = ?, `Account_Type` = ? WHERE Email = ?";
+
+    db.query(q, [...values, email], (err, data) => {
+        if (err) {
+            console.error("Error updating LOGIN:", err);
+            return res.json(err);
+        } else {
+            console.log("Succesfully updated User");
+            return res.json("Updated LOGIN"); 
+        }
+    })
 })
 
 
