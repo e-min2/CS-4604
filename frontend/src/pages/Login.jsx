@@ -19,7 +19,7 @@ function Login() {
                 // Assuming a successful login is indicated by a specific status code in the response
                 // For example, a status code of 200 indicates success
                 if (response.status === 200) {
-                    navigate("/");
+                    navigate("/landing");
                 } else {
                     // Optionally handle unsuccessful login attempt
                     console.error('Login failed:', response);

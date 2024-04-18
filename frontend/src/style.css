@@ -64,3 +64,30 @@ input{
     width: 20%; /* Equivalent to w-25 */
 }
 
+.landingBody {
+    background-color: #007bff; /* Assuming the default Bootstrap primary color */
+    background-size: cover;
+    overflow: auto;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    margin-left: -50vw; /* Pull the element back to the left edge */
+    margin-right: -50vw; /* Ensure it stretches to the right edge */
+}
+
+.landingPage {
+    background-color: white;
+    width: 50vw;
+}
+
+.landingHeader {
+    padding-bottom: 2vh;
+}
+
+.button_landing {
+    padding-bottom: 3vh;
+}
+

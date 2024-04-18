@@ -35,6 +35,7 @@ import Minor from "./pages/Minor";
 import AddMinor from "./pages/AddMinor";
 import UpdateMinor from "./pages/UpdateMinor";
 import Login from "./pages/Login";
+import AdminLanding from "./pages/AdminLanding";
 import "./style.css";
 
 
@@ -69,7 +70,8 @@ function App() {
             <Route path="/minors" element={<Minor/>}/>
             <Route path="/addminor" element={<AddMinor/>}/>
             <Route path="/updateminor/:minname" element={<UpdateMinor/>}/>
-            <Route path="/login" element={<Login/>}/>
+            <Route element={<AdminLanding />} path="/landing" />
+            <Route element={<Login />} path="/" />
 
             {/* The id part at the end makes sure the current student/instructor's id shows up in the url on the update page */}
           </Routes>
