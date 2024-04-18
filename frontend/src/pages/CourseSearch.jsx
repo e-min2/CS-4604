@@ -37,6 +37,9 @@ const CourseSearch = () => {
         (course.Departments && course.Departments.toLowerCase().includes(searchTerm))
     );
 
+    const gpa_sum = filteredCourses.reduce((sum, course) => sum + course.CGPA_Value, 0);
+    const gpa_avg = gpa_sum / filteredCourses.length;
+
     // This is basically preparing the data for the bar chart
     const chartData = filteredCourses.map(course => ({
         name: course.Course_Number,
@@ -50,26 +53,29 @@ const CourseSearch = () => {
                 <input 
                     type="search" 
                     className="search" 
-                    placeholder="Type Course Name, Prerequisites, or Department" 
+                    placeholder="Type Course Name or Department" 
                     style={inputStyle} 
                     onChange={e => onSearchChange(e.target.value)}
                 />
                 {searchTerm && ( // I have it set so the graph only renders when there is a search term because the graph gets filled with every class. 
-                    <BarChart
-                        width={1300}
-                        height={500}
-                        data={chartData}
-                        margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="GPA" fill="#8884d8" />
-                    </BarChart>
+                    <>
+                        <BarChart
+                            width={1300}
+                            height={500}
+                            data={chartData}
+                            margin={{
+                                top: 5, right: 30, left: 20, bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="GPA" fill="#8884d8" />
+                        </BarChart>
+                        <h2>Average GPA Of Course: {gpa_avg.toFixed(2)}</h2>
+                    </>
                 )}
                 {filteredCourses.map(course => (
                     <div className="course" key={`${course.Course_Number}-${course.Prerequisites}`}> 
