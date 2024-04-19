@@ -9,6 +9,7 @@ const Minors = () => {
 
     const [minors, setMinors] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [gpas, setGPAS] = useState([]);
 
     useEffect(() => {
         const fetchAllMinors = async () => {
@@ -22,6 +23,21 @@ const Minors = () => {
         }
         fetchAllMinors();
     }, [])
+
+
+    useEffect(() => {
+        const fetchAllGPASForMinors = async () => {
+            if (searchTerm) {
+                try {
+                    const res = await axios.get(`http://localhost:8800/minors/${searchTerm}`);
+                    setGPAS(res.data);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        }
+        fetchAllGPASForMinors()
+    }, [searchTerm])
 
     const inputStyle = {
         padding: 12,
@@ -37,6 +53,17 @@ const Minors = () => {
         (minor.Minor_Name.toLowerCase().includes(searchTerm) || 
         (minor.Minor_Dep && minor.Minor_Dep.toLowerCase().includes(searchTerm)))
     );
+
+
+    const gpa_sum = gpas.reduce((sum, curr_gpa) => sum + curr_gpa.SGPA_Value, 0);
+    const gpa_avg = gpa_sum / gpas.length;
+
+    const chartData = [{
+        name: "Average GPA Of Searched Minor",
+        GPA: gpa_avg.toFixed(2)
+    }];
+
+
     return (
         <div>
         <h1>List Of All Minors</h1>
@@ -48,6 +75,23 @@ const Minors = () => {
                 style={inputStyle} 
                 onChange={e => onSearchChange(e.target.value)}
             />
+             {searchTerm && chartData.length > 0 && ( // I have it set so the graph only renders when there is a search term because the graph gets filled with every class. 
+                <BarChart
+                    width={500}
+                    height={500}
+                    data={chartData}
+                    margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis/>
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="GPA" fill="#8884d8" />
+                </BarChart>
+            )}
             {filteredMinors.map(minor => (
                 <div className="instructor" key={`${minor.Minor_Name}`}> 
                     <h2>{minor.Minor_Name}</h2>

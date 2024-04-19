@@ -9,6 +9,7 @@ const Majors = () => {
 
     const [majors, setMajors] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [gpas, setGPAS] = useState([]);
 
     useEffect(() => {
         const fetchAllMajors = async () => {
@@ -22,6 +23,21 @@ const Majors = () => {
         }
         fetchAllMajors();
     }, [])
+
+
+    useEffect(() => {
+        const fetchAllGPASForMajors = async () => {
+            if (searchTerm) {
+                try {
+                    const res = await axios.get(`http://localhost:8800/majors/${searchTerm}`);
+                    setGPAS(res.data);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        }
+        fetchAllGPASForMajors()
+    }, [searchTerm])
 
     const inputStyle = {
         padding: 12,
@@ -40,6 +56,18 @@ const Majors = () => {
         (major.Major_Dep && (major.Major_Dep.toLowerCase().includes(searchTerm)))
     );
 
+    const filteredGPAs = gpas.filter(curr_gpa => {
+        console.log(curr_gpa);
+    })
+
+    const gpa_sum = gpas.reduce((sum, curr_gpa) => sum + curr_gpa.SGPA_Value, 0);
+    const gpa_avg = gpa_sum / gpas.length;
+
+    const chartData = [{
+        name: "Average GPA Of Searched Major",
+        GPA: gpa_avg.toFixed(2)
+    }];
+
     return (
         <div>
         <h1>List Of All Majors</h1>
@@ -51,6 +79,23 @@ const Majors = () => {
                 style={inputStyle} 
                 onChange={e => onSearchChange(e.target.value)}
             />
+            {searchTerm && chartData.length > 0 && ( // I have it set so the graph only renders when there is a search term because the graph gets filled with every class. 
+                <BarChart
+                    width={500}
+                    height={500}
+                    data={chartData}
+                    margin={{
+                        top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis/>
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="GPA" fill="#8884d8" />
+                </BarChart>
+            )}
             {filteredMajors.map(major => (
                 <div className="instructor" key={`${major.Major_Name}`}> 
                     <h2>{major.Major_Name}</h2>

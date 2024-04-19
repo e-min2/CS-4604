@@ -54,26 +54,22 @@ const Students = () => {
 
     const filteredStudents = students.filter(student => 
         student.Student_Name.toLowerCase().includes(searchTerm) ||
-        // (course.Prerequisites && course.Prerequisites.toLowerCase().includes(searchTerm)) || 
-        // option will allow for people to search for classes in the pre-reqs but I feel like it makes the searches more clunky so if we want it on we can uncomment it.
-        (student.Major && student.Minor.toLowerCase().includes(searchTerm))
+        (student.Major.toLowerCase().includes(searchTerm) || student.Minor.toLowerCase().includes(searchTerm))
     );
 
-    // const test = filteredCourses.map(c => {
-    //     console.log("test print");
-    //     console.log(c.Course_Number);
-    //     console.log(c.CGPA_Value);
-    // });
+    const gpa_sum = filteredStudents.reduce((sum, student) => sum + student.SGPA_Value, 0);
+    const gpa_avg = gpa_sum / filteredStudents.length;
 
-    // const chartData = filteredCourses.map(courses => {
-    //     console.log(courses); // Log each course object
-    //     return {
-    //         name: courses.Course_Number,
-    //         GPA: courses.CGPA_VALUE // Make sure this matches the exact property name from the data
-    //     };
-    // });
+    // This is basically preparing the data for the bar chart
+    // const chartData = filteredStudents.map(student => ({
+    //     name: "Average GPA Of Students Searched",
+    //     GPA: gpa_avg
+    // }));
 
-    // console.log(chartData);
+    const chartData = [{
+        name: "Average GPA Of Students Searched",
+        GPA: gpa_avg.toFixed(2)
+    }];
 
 
     return (
@@ -87,7 +83,7 @@ const Students = () => {
                 style={inputStyle} 
                 onChange={e => onSearchChange(e.target.value)}
             />
-            {/* {searchTerm && chartData.length > 0 && ( // I have it set so the graph only renders when there is a search term because the graph gets filled with every class. 
+            {searchTerm && chartData.length > 0 && ( // I have it set so the graph only renders when there is a search term because the graph gets filled with every class. 
                 <BarChart
                     width={1300}
                     height={500}
@@ -103,7 +99,7 @@ const Students = () => {
                     <Legend />
                     <Bar dataKey="GPA" fill="#8884d8" />
                 </BarChart>
-            )} */}
+            )}
             {filteredStudents.map(student => (
                 <div className="instructor" key={`${student.Student_ID}`}> 
                     <h2>{student.Student_Name}</h2>

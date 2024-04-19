@@ -137,10 +137,41 @@ app.get("/users", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.json(data);
+           return res.json(data);
         }
     })
 })
+
+app.get("/majors/:majname", (req, res) => {
+    const majName = req.params.majname; 
+
+    const q = "SELECT SGPA_Value FROM STUDENT WHERE MAJOR = ?"; 
+
+    db.query(q, [majName], (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            return res.json(data);
+        }
+    })
+     
+})
+
+app.get("/minors/:minname", (req, res) => {
+    const minName = req.params.minname; 
+
+    const q = "SELECT SGPA_Value FROM STUDENT WHERE MINOR = ?"; 
+
+    db.query(q, [minName], (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            return res.json(data);
+        }
+    })
+     
+})
+
 
 app.post('/login', (req, res) => {
     const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
