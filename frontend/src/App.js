@@ -38,6 +38,9 @@ import Login from "./pages/Login";
 import AdminLanding from "./pages/AdminLanding";
 import CourseSearch from "./pages/CourseSearch";
 import InstructorSearch from "./pages/InstructorSearch";
+import StudentSearch from "./pages/StudentSearch";
+import MajorSearch from "./pages/MajorSearch";
+import MinorSearch from "./pages/MinorSearch";
 import Users from "./pages/Users";
 import AddUser from "./pages/AddUser";
 import UpdateUser from "./pages/UpdateUser";
@@ -81,10 +84,12 @@ function App() {
             {/* <Route path="/login" element={<Login/>}/> */}
             <Route path="/coursesearch" element={<CourseSearch/>}/>
             <Route path="/instructorsearch" element={<InstructorSearch/>}/>
+            <Route path="/studentsearch" element={<StudentSearch />}/>
+            <Route path="/majorsearch" element={<MajorSearch />}/>
+            <Route path="/minorsearch" element={<MinorSearch />}/>
             <Route path="/users" element={<Users/>}/>
             <Route path="/adduser" element={<AddUser/>}/>
             <Route path="/updateuser/:email" element={<UpdateUser/>}/>
-
           </Routes>
         </BrowserRouter>
     </div>
