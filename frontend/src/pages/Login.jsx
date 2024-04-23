@@ -3,30 +3,36 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const navigate = useNavigate() // This is a function that allows you to navigate from one page to another, it's from the react-router-dom library
+    const navigate = useNavigate() 
 
     function handleSubmit(event) {
         event.preventDefault();
     
         axios.post("http://localhost:8800/login", { email, password })
             .then(response => {
-                // Assuming a successful login is indicated by a specific status code in the response
-                // For example, a status code of 200 indicates success
-                if (response.status === 200) {
-                    navigate("/landing");
+
+                const token = response.data.token;
+
+                // This will store the token in localStorage, allowing us to retrieve it later.
+                localStorage.setItem('token', token);
+
+                const userRole = jwtDecode(token).role;
+
+                if (userRole === 'Admin') {
+                    navigate("/adminlanding");
                 } else {
-                    // Optionally handle unsuccessful login attempt
-                    console.error('Login failed:', response);
+                    // We need to make a student landing so for now we'll direct everyone to the admin landing page. 
+                    navigate("/studentlanding");
                 }
             })
             .catch(err => {
-                // Handle any errors that occurred during the request
                 console.log(err);
             })
     }
@@ -37,7 +43,7 @@ function Login() {
                 <form onSubmit={handleSubmit}>
                     <div className='mb-3'>
                         <label htmlFor="email">Email</label>
-                        <input type="email" placeholder='Enter Email' className ='form-control' onChange = { e => setEmail(e.target.value)}/>
+                        <input type="text" placeholder='Enter Email' className ='form-control' onChange = { e => setEmail(e.target.value)}/>
 
                     </div>
                     <div className='mb-3'>

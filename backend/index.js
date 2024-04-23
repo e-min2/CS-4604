@@ -1,8 +1,11 @@
 import express from "express"
 import mysql from "mysql"
 import cors from "cors"
+import jwt from "jsonwebtoken"
+
 
 const app = express()
+
 
 const db = mysql.createConnection({
 
@@ -15,6 +18,7 @@ const db = mysql.createConnection({
 
 app.use(express.json())
 app.use(cors())
+
 
 app.get("/", (req, res) => {
     res.json("hello this is the backend")
@@ -124,7 +128,7 @@ app.get("/courses/:instructorname", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log("Showing instructor's courses worked!!");
+           // console.log("Showing instructor's courses worked!!");
             return res.json(data);
         }
     });
@@ -175,14 +179,23 @@ app.get("/minors/:minname", (req, res) => {
 
 app.post('/login', (req, res) => {
     const q = "SELECT * FROM LOGIN WHERE Email = ? AND Password = ?";
-    const values = [req.body.email, req.body.password];
+    const {email, password} = req.body;
 
-    db.query(q, [values], (err, data) => {
+    db.query(q, [email, password], (err, data) => {
         if (err) {
+            console.log("We did not find the username");
+            console.log(err);
             return res.json("Login failed");
         } else {
             if (data.length > 0) {
-                return res.json("Login successful");
+                //console.log("WE found the username");
+                const token = jwt.sign({id: data[0].Email, role: data[0].Account_Type.toString()}, 'jwt_secret_key', {expiresIn: '7d'}) // Making a jwt token to put in local storage.
+                
+                // Send the JWT and user details to front end
+                return res.json({
+                    message: "Login successful",
+                    token: token,
+                });
             } else {
                 return res.json("No record");   
             }

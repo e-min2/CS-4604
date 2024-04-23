@@ -1,7 +1,15 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const AdminLanding = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/');
+    }
 
     return (
         <div className="landingBody">
@@ -31,6 +39,9 @@ const AdminLanding = () => {
                         </div>
                         <div className="button_landing">
                             <button><Link to="/minors">Minors</Link></button>
+                        </div>
+                        <div className="button_landing">
+                            <button onClick={handleLogout}>Logout</button>
                         </div>
                     </div>
             </div>
