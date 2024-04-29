@@ -1,6 +1,6 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; 
+import ErrorPage from "./ErrorPage";
 
 const RoleRoutes = ({ children, allowedRoles }) => {
     // Get the token from local storage. 
@@ -21,7 +21,7 @@ const RoleRoutes = ({ children, allowedRoles }) => {
     } else {
         // Redirect to the home page if the user is not authorized or if there's an error. 
         // I tried using useNavigate here but I don't know why it doesn't work but this works as a fix so who cares I guess. 
-        return <Navigate to="/" replace />;
+        return <ErrorPage />;
     }
 };
 
