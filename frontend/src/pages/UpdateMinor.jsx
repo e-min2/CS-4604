@@ -39,7 +39,7 @@ const UpdateMinor = () => {
         try{
             // We'll uise axios to send our put requests to our backend to update.
             await axios.put("http://localhost:8800/minors/"+ minorName, minor); // This is the api call we wrote for put requests to our database in order to update.
-            navigate("/majors"); // If everything was successful navigate to the home page. 
+            navigate("/minors"); // If everything was successful navigate to the home page. 
         }catch(err){
             console.log(err)
         }

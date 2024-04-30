@@ -558,7 +558,7 @@ app.put("/students/:id", (req, res) => {
                 if (err2) {
                     return res.json(err2);
                 } else {
-                    console.log("Successfully deleted a student");
+                    console.log("Successfully updated a student");
                     return res.json("Student has been updated");
                 }
             })
@@ -678,7 +678,7 @@ app.put("/majors/:majname", (req, res) => {
 
 app.put("/minors/:minname", (req, res) => {
 
-    const minname = req.params.majname;
+    const minname = req.params.minname;
     const values = [req.body.Minor_Name, req.body.Minor_Dep]; 
 
     const q = "UPDATE MINOR SET `Minor_Name` = ?, `Minor_Dep` = ? WHERE Minor_Name = ?"
@@ -688,7 +688,12 @@ app.put("/minors/:minname", (req, res) => {
             console.error("Error updating MINOR:", err);
             return res.json(err);
         } else {
-            console.log("Sucessfully updated MINOR");
+            if (data.affectedRows > 0) {
+                console.log("Sucessfully updated MINOR");
+            } else {
+                console.error("Error updating a minor:", err);
+                console.log("note real");
+            }
             return res.json("Updated MINOR"); 
         }
     })

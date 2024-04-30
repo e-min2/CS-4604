@@ -17,7 +17,13 @@ const AdminLanding = () => {
                 <h1 className="landingHeader">Welcome to the Grade Distribution Viewer</h1>
                     <div>
                         <div className="button_landing">
+                            <button><Link to="/users">All Users</Link></button>
+                        </div>
+                        <div className="button_landing">
                             <button><Link to="/students">Students</Link></button>
+                        </div>
+                        <div className="button_landing">
+                            <button><Link to="/studentsearch">Student Search</Link></button>
                         </div>
                         <div className="button_landing">
                             <button><Link to="/instructors">Instructors</Link></button>
