@@ -1,0 +1,1 @@
+My main role on the team was working on both the front end and back end components of my team's website. I  worked on formatting the UI of the website and essentially creating the connectivity between our website's backend and the SQL database. I also had a role in creating the initial SQL database and helping populate each table within the database.
