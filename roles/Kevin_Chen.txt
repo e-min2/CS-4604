@@ -1,0 +1,3 @@
+I don't have much database experience, so I helped Eugene out to setup the initial schema. I also helped to tweak the values for the react charts. I have a strong
+math background, so I really enjoy statistics and data vizualization. I also helped to test how the UI works, and I gave feedback to the others on what I wanted
+changed.

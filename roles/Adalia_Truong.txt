@@ -1,1 +1,2 @@
-I worked on the ethics side of our project. In particular, I discussed privacy concerns on user data and data usage permissions with the group. Additionally, I had a big hand in documenting and creating the tables, schemas, and diagrams.
+I worked on the ethics side of our project. In particular, I discussed privacy concerns on user data and data usage 
+permissions with the group. Additionally, I had a big hand in documenting and creating the tables, schemas, and diagrams.

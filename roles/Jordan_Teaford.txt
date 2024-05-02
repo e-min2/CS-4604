@@ -1,0 +1,3 @@
+Having had an internship for frontend development, I jumped right in and helped designed a few of the pages and style others. I did the admin landing page and
+helped to set up many of the subpages within this web app. I also help setup some backend enpoints and test their functionality. I didn't have any part in setting up
+the database or its schema, though. That was mostly Eugene's handiwork. 
